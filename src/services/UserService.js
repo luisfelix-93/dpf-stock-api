@@ -1,16 +1,18 @@
 const User = require('../models/User');
+const {createPasswordHash} = require('../helper/auth');
 
 class UserService {
     async registerUser(nmUser, email, nuRegistration, password) {
-       try{   
-            const user = {
-                nmUser,
-                email, 
-                nuRegistration, 
-                password
+       try{
+          const encryptadePassword = await createPasswordHash(password);
+          const user = {
+              nmUser,
+              email, 
+              nuRegistration, 
+              password : encryptadePassword
             };
-        const newUser = new User(user);
-        return newUser;
+          const newUser = new User(user);
+          return newUser;
         } catch(error) {
             throw error;
         }
